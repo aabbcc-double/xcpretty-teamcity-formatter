@@ -35,19 +35,21 @@ class TeamCityFormatter < XCPretty::Simple
     puts "##teamcity[testSuiteFinished name='#{@previousSuite}']"
   end
 
+  # Time is given in seconds. TeamCity expects in milliseconds (only integer)
   def format_passing_test(suite, test, time)
     "##teamcity[testStarted name='#{test}']\n" +
-        "##teamcity[testFinished name='#{test}' duration='#{time}']"
+      "##teamcity[testFinished name='#{test}' duration='#{round(time.to_f * 1000)}']"
   end
 
   def format_error(message)
     "##teamcity[testStdErr name='className.testName' out='#{message}']"
   end
 
+  # Time is given in seconds. TeamCity expects in milliseconds (only integer)
   def format_failing_test(suite, test, time, file_path)
     "##teamcity[testStarted name='#{test}']\n" +
-        "##teamcity[testFailed name='#{test}' message='#{time}']\n" +
-        "##teamcity[testFinished name='#{test}']"
+      "##teamcity[testFailed name='#{test}' message='#{round(time.to_f * 1000)}']\n" +
+      "##teamcity[testFinished name='#{test}']"
   end
 
   def format_check_dependencies()
