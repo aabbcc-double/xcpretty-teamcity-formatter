@@ -38,7 +38,7 @@ class TeamCityFormatter < XCPretty::Simple
   # Time is given in seconds. TeamCity expects in milliseconds (only integer)
   def format_passing_test(suite, test, time)
     "##teamcity[testStarted name='#{test}']\n" +
-      "##teamcity[testFinished name='#{test}' duration='#{round(time.to_f * 1000)}']"
+      "##teamcity[testFinished name='#{test}' duration='#{(time.to_f * 1000).round}']"
   end
 
   def format_error(message)
@@ -48,7 +48,7 @@ class TeamCityFormatter < XCPretty::Simple
   # Time is given in seconds. TeamCity expects in milliseconds (only integer)
   def format_failing_test(suite, test, time, file_path)
     "##teamcity[testStarted name='#{test}']\n" +
-      "##teamcity[testFailed name='#{test}' message='#{round(time.to_f * 1000)}']\n" +
+      "##teamcity[testFailed name='#{test}' message='#{(time.to_f * 1000).round}']\n" +
       "##teamcity[testFinished name='#{test}']"
   end
 
